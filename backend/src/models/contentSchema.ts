@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Types } from "mongoose"
-const contentTypes = ["document", "video", "article", "audio"]
+const contentTypes = ["document", "video", "tweet", "link"]
 const content = new mongoose.Schema({
     link: { type: String, required: true },
     type: { type: String, enum: contentTypes, required: true },
