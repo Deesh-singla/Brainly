@@ -36,7 +36,7 @@ export default function Sidebar({ setTypeOfCards }: SidebarProps) {
     // }
     return (
         <div className='w-full h-full bg-white dark:bg-sign-bg shadow-lg border-r border-gray-200 dark:border-gray-700 relative'>
-            <div className='flex items-center p-4 pt-6 gap-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer' onClick={()=>setTypeOfCards("all")}>
+            <div className='flex items-center p-4 pt-6 gap-3 border-b border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800' onClick={()=>setTypeOfCards("all")}>
                 <img src={brainlyLogo} alt="Brainly Logo" className="w-8 h-8" />
                 <div className='text-2xl font-bold text-gray-800 dark:text-white'>
                     Second Brain

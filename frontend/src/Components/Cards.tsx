@@ -1,3 +1,5 @@
+import Card from "./Card";
+
 interface Tag {
   _id: string;
   title: string;
@@ -12,7 +14,7 @@ interface Content {
   _id: string;
   title: string;
   link: string;
-  type: "tweet" | "video" | "document" | "link";
+  type: string;
   tags: Tag[];
   userId: User;
   __v: number;
@@ -22,12 +24,12 @@ interface CardsProps {
   typeOfCards: string;
 }
 export default function Cards({ contents, typeOfCards }: CardsProps) {
-  console.log(contents, typeOfCards)
+  console.log(contents, typeOfCards);
   return (
-    <div className="h-[90vh] grid grid-cols-3 gap-6 overflow-scroll p-4">
+    <div className="h-[90vh] grid grid-cols-3 gap-6 overflow-scroll p-4 overflow-x-hidden scrollbar-hide pt-5">
       {contents.map(x => (
         <div key={x._id}>
-          <h1>{x.title}</h1>
+          <Card data={x} />
         </div>
       ))}
     </div>

@@ -24,7 +24,7 @@ export default function Signin() {
     }
     async function handleClick(): Promise<void> {
         try {
-            const res = await fetch(`http://localhost:3000/api/v1/signin`, {
+            const res = await fetch(`http://localhost:3001/api/v1/signin`, {
                 method: "post",
                 headers: {
                     "content-type": "application/json",
