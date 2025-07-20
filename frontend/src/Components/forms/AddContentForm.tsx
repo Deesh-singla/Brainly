@@ -1,14 +1,15 @@
 import { useRef, useState } from "react";
 import CloseIcon from "../Icons/CloseIcon";
-import Button from "./Button";
-import FormField from "./FormField";
-import TagInput from "./TagInput";
+import Button from "../common/Button";
+import FormField from "../common/FormField";
+import TagInput from "../common/TagInput";
 
 interface HomeHeaderProps {
   setShowForm: (x: boolean) => void;
+  setFlag: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function AddContentForm({ setShowForm }: HomeHeaderProps) {
+export default function AddContentForm({ setShowForm, setFlag }: HomeHeaderProps) {
   const [tags, setTags] = useState<string[]>([]);
   const tagsInput = useRef<HTMLInputElement | null>(null);
   const titleInput = useRef<HTMLInputElement | null>(null);
@@ -56,6 +57,7 @@ export default function AddContentForm({ setShowForm }: HomeHeaderProps) {
 
     const da = await res.json();
     errorDiv.current!.innerText = da.error || da.message;
+    setFlag((prev) => !prev);
   }
 
   return (

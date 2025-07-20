@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "./Button";
+import Button from "../common/Button";
 import EyeSlashIcon from "../Icons/EyeSlashIcon";
 import EyeIcon from "../Icons/EyeIcon";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,6 @@ export default function Signin() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
     const navigate = useNavigate();
-    // const { setIsAuthenticated } = useOutletContext<{ setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>> }>();
     const username = useRef<HTMLInputElement | null>(null);
     const password = useRef<HTMLInputElement | null>(null);
     const errorDiv = useRef<HTMLDivElement | null>(null);
@@ -34,7 +33,6 @@ export default function Signin() {
             const data: signinResponse = await res.json();
             const authHeader = res.headers.get('authorization')!;
             localStorage.setItem("authorization", authHeader);
-            console.log(data);
             if (data.error)
                 errorDiv.current!.innerText = data.error;
             else {

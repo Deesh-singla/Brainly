@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import Button from "./Button";
+import Button from "../common/Button";
 import EyeSlashIcon from "../Icons/EyeSlashIcon";
 import EyeIcon from "../Icons/EyeIcon";
 export default function Signup() {

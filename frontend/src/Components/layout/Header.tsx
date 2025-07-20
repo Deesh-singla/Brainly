@@ -1,5 +1,4 @@
-
-import Button from "./Button";
+import Button from "../common/Button"
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {

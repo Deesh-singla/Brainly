@@ -4,6 +4,7 @@ import VideoIcon from '../Icons/VideoIcon';
 import TweetIcon from '../Icons/TweetIcon';
 import DeleteIcon from '../Icons/DeleteIcon';
 import LinkIcon from '../Icons/LinkIcon';
+import DocumentIcon from '../Icons/DocumentIcon';
 
 interface Tag {
     _id: string;
@@ -27,16 +28,17 @@ interface Content {
 
 interface CardProps {
     data: Content;
+    setDeleteId: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Card({ data }: CardProps) {
-    console.log(data.tags)
+export default function Card({ data,setDeleteId }: CardProps) {
     let tweetId = "";
     if (data.type == "tweet") {
         const t = data.link.split("/");
         tweetId = t[t.length - 1];
     }
     async function handleDelete(contentId: string) {
+        setDeleteId(prev=>!prev);
         const res = await fetch("http://localhost:3001/api/v1/content", {
             method: "delete",
             headers: {
@@ -55,6 +57,7 @@ export default function Card({ data }: CardProps) {
                     {data.type === "video" && <VideoIcon />}
                     {data.type === "tweet" && <TweetIcon />}
                     {data.type === "link" && <LinkIcon />}
+                    {data.type === "document" && <DocumentIcon />}
                     <h1 className="text-normal-color text-xl font-medium">{data.title}</h1>
                 </div>
                 <div onClick={() => handleDelete(data._id)} className='cursor-pointer'>
@@ -80,7 +83,7 @@ export default function Card({ data }: CardProps) {
                         </div>
                     </div>
                 }
-                {data.type === "link" &&
+                {data.type === "link"||data.type ==="document" &&
                     <div className="w-full max-w-sm">
                         <div>
                             <a href={data.link} target='_blank' className='text-secondary-btn-bg underline'>{data.link}</a>

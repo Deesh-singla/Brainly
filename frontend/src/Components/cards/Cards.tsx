@@ -21,15 +21,14 @@ interface Content {
 }
 interface CardsProps {
   contents: Content[];
-  typeOfCards: string;
+  setDeleteId: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export default function Cards({ contents, typeOfCards }: CardsProps) {
-  console.log(contents, typeOfCards);
+export default function Cards({ contents, setDeleteId}: CardsProps) {
   return (
     <div className="h-[90vh] grid grid-cols-3 gap-6 overflow-scroll p-4 overflow-x-hidden scrollbar-hide pt-5">
       {contents.map(x => (
         <div key={x._id}>
-          <Card data={x} />
+          <Card data={x} setDeleteId={setDeleteId}/>
         </div>
       ))}
     </div>
