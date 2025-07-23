@@ -39,7 +39,7 @@ export default function Card({ data,setDeleteId }: CardProps) {
     }
     async function handleDelete(contentId: string) {
         setDeleteId(prev=>!prev);
-        const res = await fetch("http://localhost:3001/api/v1/content", {
+        const res = await fetch("https://brainly-backend-kbmk.onrender.com/api/v1/content", {
             method: "delete",
             headers: {
                 "content-type": "application/json",

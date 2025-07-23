@@ -11,6 +11,7 @@ interface HomeHeaderProps {
 
 export default function AddContentForm({ setShowForm, setFlag }: HomeHeaderProps) {
   const [tags, setTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const tagsInput = useRef<HTMLInputElement | null>(null);
   const titleInput = useRef<HTMLInputElement | null>(null);
   const typeInput = useRef<HTMLSelectElement | null>(null);
@@ -39,25 +40,34 @@ export default function AddContentForm({ setShowForm, setFlag }: HomeHeaderProps
       return;
     }
 
-    const obj = {
-      title: titleInput.current!.value,
-      link: linkInput.current!.value,
-      tags: tags,
-      type: typeInput.current!.value
-    };
+    setLoading(true);
 
-    const res = await fetch("http://localhost:3001/api/v1/content", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "authorization": localStorage.getItem("authorization")!
-      },
-      body: JSON.stringify(obj),
-    });
+    try {
+      const obj = {
+        title: titleInput.current!.value,
+        link: linkInput.current!.value,
+        tags: tags,
+        type: typeInput.current!.value
+      };
 
-    const da = await res.json();
-    errorDiv.current!.innerText = da.error || da.message;
-    setFlag((prev) => !prev);
+      const res = await fetch("https://brainly-backend-kbmk.onrender.com/api/v1/content", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "authorization": localStorage.getItem("authorization")!
+        },
+        body: JSON.stringify(obj),
+      });
+
+      const da = await res.json();
+      errorDiv.current!.innerText = da.error || da.message;
+      setFlag((prev) => !prev);
+    } catch (err) {
+      console.log(err);
+      errorDiv.current!.innerText = "Something went wrong!";
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -99,10 +109,10 @@ export default function AddContentForm({ setShowForm, setFlag }: HomeHeaderProps
 
         <Button
           variant={"submitSecondary"}
-          text={"Submit"}
+          text={loading ? "Loading..." : "Submit"}
           size={"md"}
           className={"mt-4"}
-          onClick={() => handleClick()}
+          onClick={handleClick}
         />
 
         <div ref={errorDiv} className="text-md text-subheading h-2"></div>

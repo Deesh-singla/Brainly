@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
-      "/api/v1/signup": "http://localhost:3001/",
-      "/api/v1/signin": "http://localhost:3001/",
+      "/api/v1/signup": "https://brainly-backend-kbmk.onrender.com",
+      "/api/v1/signin": "https://brainly-backend-kbmk.onrender.com",
     }
   }
 })

@@ -3,9 +3,11 @@ import Button from "../common/Button";
 import EyeSlashIcon from "../Icons/EyeSlashIcon";
 import EyeIcon from "../Icons/EyeIcon";
 import { useNavigate } from "react-router-dom";
+
 export default function Signin() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const username = useRef<HTMLInputElement | null>(null);
     const password = useRef<HTMLInputElement | null>(null);
@@ -21,28 +23,36 @@ export default function Signin() {
         error?: string;
         message?: string;
     }
+
     async function handleClick(): Promise<void> {
+        setLoading(true);
         try {
-            const res = await fetch(`http://localhost:3001/api/v1/signin`, {
+            const res = await fetch(`https://brainly-backend-kbmk.onrender.com/api/v1/signin`, {
                 method: "post",
                 headers: {
                     "content-type": "application/json",
                 },
                 body: JSON.stringify({ username: username.current?.value, password: password.current?.value })
-            })
+            });
+
             const data: signinResponse = await res.json();
             const authHeader = res.headers.get('authorization')!;
             localStorage.setItem("authorization", authHeader);
-            if (data.error)
+
+            if (data.error) {
                 errorDiv.current!.innerText = data.error;
-            else {
+            } else {
                 errorDiv.current!.innerText = data.message || " ";
                 setRedirect(true);
             }
         } catch (err) {
             console.log(err);
+            errorDiv.current!.innerText = "Something went wrong!";
+        } finally {
+            setLoading(false);
         }
     }
+
     return (
         <main className="h-[90vh] flex items-center justify-center bg-sign-bg">
             <div className="flex flex-col gap-4 p-6 bg-body-bg rounded-lg shadow-md w-[400px] dark:text-white">
@@ -55,17 +65,26 @@ export default function Signin() {
                     <label htmlFor="username" className="text-lg font-medium">Username</label>
                     <input type="text" id="username" className="bg-input-div rounded-md px-3 py-2 outline-none focus:bg-input-div" placeholder="XYZ" ref={username} />
                 </div>
+
                 <div className="flex flex-col gap-2 w-full">
                     <label htmlFor="password" className="text-lg font-medium">Password</label>
                     <div className="w-full relative flex items-center justify-between">
                         <input type={showPassword ? "text" : "password"} id="password" className="relative w-full bg-input-div rounded-md px-3 py-2 outline-none text-lg" placeholder={!showPassword ? "•••" : "ABC"} ref={password} />
-                        <button className="absolute text-subheading right-1" onClick={(e) => { e.preventDefault(); setShowPassword(t => !t) }}>{showPassword ? <EyeIcon /> : <EyeSlashIcon />}</button>
+                        <button className="absolute text-subheading right-1" onClick={(e) => { e.preventDefault(); setShowPassword(t => !t) }}>
+                            {showPassword ? <EyeIcon /> : <EyeSlashIcon />}
+                        </button>
                     </div>
                 </div>
-                <Button variant={"submitSecondary"} text={"Sign in"} size={"md"} onClick={() => { handleClick() }} />
+
+                <Button
+                    variant="submitSecondary"
+                    text={loading ? "Loading..." : "Sign in"}
+                    size="md"
+                    onClick={handleClick}
+                />
+
                 <div ref={errorDiv} className="text-md text-subheading h-2"></div>
             </div>
         </main>
     );
 }
-

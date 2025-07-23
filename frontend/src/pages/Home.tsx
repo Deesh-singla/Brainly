@@ -43,10 +43,10 @@ export default function Home() {
   };
 
   const typeOfCards = getTypeFromRoute();
-
+console.log(deleteId);
   useEffect(() => {
     const fetchContents = async () => {
-      const res = await fetch("http://localhost:3001/api/v1/content", {
+      const res = await fetch("https://brainly-backend-kbmk.onrender.com/api/v1/content", {
         method: "get",
         headers: {
           "authorization": localStorage.getItem("authorization")!
